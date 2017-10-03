@@ -148,7 +148,8 @@ static IMP WKOriginalImp;
     // They removed this behavior is iOS 10, but for 8 and 9 we need to prevent the webview from listening on keyboard events
     // Even if you later set shrinkView to false, the observers will not be added back
     NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-    if ([self.webView isKindOfClass:NSClassFromString(@"WKWebView")]) {
+    if ([self.webView isKindOfClass:NSClassFromString(@"WKWebView")]
+        && ![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){.majorVersion = 10, .minorVersion = 0, .patchVersion = 0 }]) {
         [nc removeObserver:self.webView name:UIKeyboardWillHideNotification object:nil];
         [nc removeObserver:self.webView name:UIKeyboardWillShowNotification object:nil];
         [nc removeObserver:self.webView name:UIKeyboardWillChangeFrameNotification object:nil];
@@ -220,47 +221,32 @@ static IMP WKOriginalImp;
 
 - (void)shrinkView:(CDVInvokedUrlCommand*)command
 {
-    if (command.arguments.count > 0) {
-        id value = [command.arguments objectAtIndex:0];
-        if (!([value isKindOfClass:[NSNumber class]])) {
-            value = [NSNumber numberWithBool:NO];
-        }
-
-        self.shrinkView = [value boolValue];
+    id value = [command.arguments objectAtIndex:0];
+    if (!([value isKindOfClass:[NSNumber class]])) {
+        value = [NSNumber numberWithBool:NO];
     }
-    
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:self.shrinkView]
-                                callbackId:command.callbackId];
+
+    self.shrinkView = [value boolValue];
 }
 
 - (void)disableScrollingInShrinkView:(CDVInvokedUrlCommand*)command
 {
-    if (command.arguments.count > 0) {
-        id value = [command.arguments objectAtIndex:0];
-        if (!([value isKindOfClass:[NSNumber class]])) {
-            value = [NSNumber numberWithBool:NO];
-        }
-
-        self.disableScrollingInShrinkView = [value boolValue];
+    id value = [command.arguments objectAtIndex:0];
+    if (!([value isKindOfClass:[NSNumber class]])) {
+        value = [NSNumber numberWithBool:NO];
     }
-    
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:self.disableScrollingInShrinkView]
-                                callbackId:command.callbackId];
+
+    self.disableScrollingInShrinkView = [value boolValue];
 }
 
 - (void)hideFormAccessoryBar:(CDVInvokedUrlCommand*)command
 {
-    if (command.arguments.count > 0) {
-        id value = [command.arguments objectAtIndex:0];
-        if (!([value isKindOfClass:[NSNumber class]])) {
-            value = [NSNumber numberWithBool:NO];
-        }
-        
-        self.hideFormAccessoryBar = [value boolValue];
+    id value = [command.arguments objectAtIndex:0];
+    if (!([value isKindOfClass:[NSNumber class]])) {
+        value = [NSNumber numberWithBool:NO];
     }
-    
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:self.hideFormAccessoryBar]
-                                callbackId:command.callbackId];
+
+    self.hideFormAccessoryBar = [value boolValue];
 }
 
 - (void)hide:(CDVInvokedUrlCommand*)command

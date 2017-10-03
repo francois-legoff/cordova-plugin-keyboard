@@ -33,8 +33,10 @@
                 <param name="android-package" value="org.apache.cordova.labs.keyboard.Keyboard" onload="true" />
             </feature>
         </config-file>
-
+	<config-file target="AndroidManifest.xml" parent="/manifest/application">
+		<activity android:configChanges="orientation|keyboard|keyboardHidden|screenSize" android:name="org.apache.cordova.labs.keyboard.Keyboard" android:label="Keyboard"></activity>
+		<activity android:configChanges="orientation|keyboard|keyboardHidden|screenSize" android:name="org.apache.cordova.labs.keyboard.Keyboard" android:label="Keyboard"></activity>
+	</config-file>
         <source-file src="src/android/Keyboard.java" target-dir="src/org/apache/cordova/labs/keyboard" />
     </platform>
-
 </plugin>
